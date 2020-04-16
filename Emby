@@ -1,0 +1,14 @@
+docker run -d \
+    --volume /mnt/user/appdata/EmbyServer/config:/config \
+    --volume /mnt/user/media/Videos:/mnt/Videos/ \ # To mount a first share
+    --volume /mnt/user/media/TV:/mnt/TV/ \ # To mount a second share
+    --device /dev/dri:/dev/dri \ # To mount all render nodes for VAAPI/NVDEC/NVENC
+    --runtime=nvidia \ # To expose your NVIDIA GPU
+    --publish 8096:8096 \ # To expose the HTTP port
+    --publish 8920:8920 \ # To expose the HTTPS port
+    --env UID=997 \ # The UID to run emby as (default: 2)
+    --env GID=997 \ # The GID to run emby as (default 2)
+    --env GIDLIST=997 \ # A comma-separated list of additional GIDs to run emby as (default: 2)
+    --env NVIDIA_VISIBLE_DEVICES=all \
+    --env NVIDIA_DRIVER_CAPABILITIES=compute,utility,video,sound \
+    emby/embyserver:latest
